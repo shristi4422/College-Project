@@ -1,20 +1,38 @@
-import { NavLink, Outlet } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext.jsx';
-import { useAuth } from '../context/AuthContext.jsx';
+import { NavLink, Outlet } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
+import { Button } from "./ui/Button";
 
-export default function Layout() {
+function Layout() {
   const { theme, toggle } = useTheme();
-  const { user, logout } = useAuth();
+
   return (
     <>
-      <header>
-        <nav>
-          <NavLink to="/">Home</NavLink> <NavLink to="/users">Users</NavLink>{' '}
-          {user ? <button onClick={logout}>Logout ({user.name})</button> : <NavLink to="/login">Login</NavLink>}
-          <button onClick={toggle} aria-label="Toggle theme">{theme === 'dark' ? '☀️' : '🌙'}</button>
+      <header className="border-b border-line bg-surface text-fg">
+        <nav className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 p-4">
+          <span className="mr-auto text-lg font-semibold">frontend-lab</span>
+          <NavLink to="/users" className="text-muted hover:text-fg">
+            Users
+          </NavLink>
+          <NavLink to="/" className="text-muted hover:text-fg">
+            Home
+          </NavLink>
+          <Button
+            type="button"
+            variant="ghost"
+            aria-label="Toggle theme"
+            aria-pressed={theme === "dark"}
+            onClick={toggle}
+          >
+            {theme === "dark" ? "☀️" : "🌙"}
+          </Button>
         </nav>
       </header>
-      <main><Outlet /></main>
+
+      <main className="mx-auto max-w-6xl p-4 md:p-8">
+        <Outlet />
+      </main>
     </>
   );
 }
+
+export default Layout;
